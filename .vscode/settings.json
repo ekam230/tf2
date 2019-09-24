@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [{
+        "askForPassword": false,
+        "database": "./db/sessions.db",
+        "dialect": "SQLite",
+        "name": "1"
+    }
+],
+"sqltools.useNodeRuntime": true
+}
