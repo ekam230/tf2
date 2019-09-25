@@ -1,3 +1,5 @@
+//тестовый файл для работы с sqlite3 в проекте не используется
+
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db/sessions.db');
 // let users = []
