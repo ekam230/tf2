@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 
 const port = 3000;
 
+
+//Пользователи для Login page
 let users = [{
         username: 'admin',
         password: '12345'
@@ -27,13 +29,17 @@ let users = [{
     },
 ]
 
+//Pug передумал использовать
 app.set('view engine', 'pug');
 
 app.use(express.static('public'));
 app.use(cookieParser());
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+//сессии храним в Sqlite
 app.use(session({
     store: new SQLiteStore({
         dir: './db/',
@@ -41,9 +47,11 @@ app.use(session({
     }),
     resave: false,
     saveUninitialized: true,
-    secret: 'supersecret'
+    secret: 'supersecret' //Passphrase
 }));
 
+
+//Основная точка входа
 app.get('/', function (req, res) {
     if (req.session.username) {
         res.redirect('/app')
@@ -54,6 +62,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
+    //Поиск пользователя в массиве
     let FoundUser;
     for (let i = 0; i < users.length; i++) {
         let u = users[i];
@@ -91,6 +100,9 @@ app.get('/app', function (req, res) {
     }
 })
 
+
+//API
+//Получение списка из базы
 app.get("/api/users", (req, res, next) => {
     if (req.session.username) {
         var sql = "select * from users"
@@ -109,6 +121,8 @@ app.get("/api/users", (req, res, next) => {
     }
 });
 
+
+//Запись в базу
 app.post("/api/users/", (req, res) => {
     var data = {
         login: req.body.login,
@@ -131,6 +145,8 @@ app.post("/api/users/", (req, res) => {
     });
 })
 
+
+//Обновление
 app.patch("/api/user/:id", (req, res) => {
     var data = {
         login: req.body.login,
@@ -157,6 +173,8 @@ app.patch("/api/user/:id", (req, res) => {
         });
 })
 
+
+//Удаление
 app.delete("/api/user/:id", (req, res, next) => {
     db.run(
         'DELETE FROM users WHERE id = ?',
@@ -175,6 +193,8 @@ app.delete("/api/user/:id", (req, res, next) => {
         });
 })
 
+
+//Завершение сессии и выход
 app.get('/logout', function (req, res) {
     req.session.username = ''
     console.log('User logout');
