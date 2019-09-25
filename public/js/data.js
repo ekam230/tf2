@@ -1,3 +1,4 @@
+//Файл использовался для использования массива без базы данных
 // const user_list = [
 // 	{ id:1, name:"Sergey",password:"321312321"},
 // 	{ id:2, name:"Mihail",password:"321312321"},
